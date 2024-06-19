@@ -2,7 +2,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { IPensamento } from '../pensamento';
 import { PensamentoService } from '../pensamento.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-editar-pensamento',
@@ -11,9 +11,16 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class EditarPensamentoComponent implements OnInit {
   formulario: FormGroup = this.formBuilder.group({
-    conteudo: '',
-    autoria: '',
-    modelo: '',
+    id: [0],
+    conteudo: [
+      '',
+      [Validators.compose([Validators.required, Validators.minLength(3)])],
+    ],
+    autoria: [
+      '',
+      [Validators.compose([Validators.required, Validators.minLength(3)])],
+    ],
+    modelo: [''],
   });
 
   constructor(
@@ -37,5 +44,12 @@ export class EditarPensamentoComponent implements OnInit {
   }
   cancelar() {
     this.router.navigate(['/listarPensamento']);
+  }
+  habilitarBotao() {
+    if (this.formulario.valid) {
+      return 'botao';
+    } else {
+      return 'botao__desabilitado';
+    }
   }
 }
